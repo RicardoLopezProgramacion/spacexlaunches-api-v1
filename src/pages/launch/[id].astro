@@ -1,0 +1,25 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import Card from "../../components/Card.astro";
+import { getLaunchByID } from "../../services/spacex";
+
+const { id } = Astro.params;
+
+let launch;
+if (id) {
+  launch = await getLaunchByID({ id });
+}
+---
+
+<Layout title=`${id}`>
+    <section class="mt-24"
+        <div>
+            <ul>
+                <li><img src={launch?.links.patch.small} alt=""></li>
+                <li>{launch?.name}</li>
+                <li>{launch?.id}</li>
+                <li>{launch?.details}</li>
+            </ul>
+        </div>
+    </section>
+</Layout>

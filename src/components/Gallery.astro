@@ -1,0 +1,42 @@
+---
+import Card from "./Card.astro";
+import type { Gallery } from "../models/gallery";
+import type { APISpaceXResponse } from "../types/api";
+import { getLaunches } from "../services/spacex";
+
+type Props = Gallery;
+
+const { name } = Astro.props;
+
+
+const fetchDetails = await getLaunches(name);
+---
+
+<div>
+  <slot />
+  <div
+    class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 p-4 justify-items-center"
+  >
+    {
+      Array.isArray(fetchDetails) ? (
+        fetchDetails.map((launch) => (
+          <Card
+            title={launch.name}
+            id={launch.id}
+            description={launch.details}
+            imageUrl={launch.img}
+            success={launch.success}
+          />
+        ))
+      ) : (
+        <Card
+          title={fetchDetails.name}
+          id={fetchDetails.id}
+          description={fetchDetails.details}
+          imageUrl={fetchDetails.img}
+          success={fetchDetails.success}
+        />
+      )
+    }
+  </div>
+</div>

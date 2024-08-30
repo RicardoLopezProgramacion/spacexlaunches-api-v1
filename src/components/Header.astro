@@ -1,0 +1,23 @@
+---
+import type { Header } from '../models/header';
+import DarkMode from './DarkMode.astro';
+
+type Props = Header;
+
+const { title, subtitle } = Astro.props; 
+---
+
+<header class="text-center">
+    <div class="flex justify-center">
+        <h1 class="md:text-4xl lg:text-6xl dark:text-white font-bold">
+            {title}
+        </h1>
+        <DarkMode/>
+    </div>
+    <h3 class="mt-2 dark:text-white">
+        {subtitle}
+    </h3>
+    <nav>
+        <slot name="slot-search" />
+    </nav>
+</header>

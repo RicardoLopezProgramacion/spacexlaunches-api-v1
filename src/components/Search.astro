@@ -1,0 +1,108 @@
+---
+import type { Search } from "../models/Search";
+import Gallery from "./Gallery.astro";
+
+type Props = Search;
+
+const { label, placeholder } = Astro.props;
+let rocketName = "";
+
+if (Astro.request.method == "POST") {
+  try {
+    const formData = await Astro.request.formData();
+    rocketName = formData.get("search")?.toString().trim() || "";
+    console.log(rocketName);
+  } catch (e) {
+    if (e instanceof Error) {
+      console.error(e.message);
+    }
+  }
+}
+---
+
+<Gallery name={rocketName}>
+  <div class="field max-w-[50%] m-auto">
+    <label for="searchbox">{label}</label>
+    <form method="POST" action="/" class="search-box">
+      <input
+        type="search"
+        name="search"
+        id="searchbox"
+        placeholder={placeholder}
+        class="search-input"
+      />
+      <button class="search-button" aria-label="Search">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 24 24"
+          width="18"
+          height="18"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <circle cx="11" cy="11" r="8"></circle>
+          <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+        </svg>
+      </button>
+    </form>
+  </div>
+</Gallery>
+
+<style>
+  .field {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 16px;
+    font-family: "Segoe UI", sans-serif;
+  }
+
+  label {
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 4px;
+    color: #323130;
+  }
+
+  .search-box {
+    display: flex;
+    align-items: center;
+    background-color: #ffffff;
+    border: 1px solid #8a8886;
+    border-radius: 4px;
+    overflow: hidden;
+    transition: all 0.2s ease-in-out;
+  }
+
+  .search-box:focus-within {
+    border-color: #0078d4;
+    box-shadow: 0 0 0 2px rgba(0, 120, 212, 0.2);
+  }
+
+  .search-input {
+    flex-grow: 1;
+    border: none;
+    padding: 8px 12px;
+    font-size: 14px;
+    outline: none;
+  }
+
+  .search-input::placeholder {
+    color: #605e5c;
+  }
+
+  .search-button {
+    background: none;
+    border: none;
+    padding: 8px 12px;
+    cursor: pointer;
+    color: #605e5c;
+    transition: color 0.2s ease-in-out;
+  }
+
+  .search-button:hover {
+    color: #0078d4;
+  }
+</style>
